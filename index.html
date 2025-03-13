@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HighRide - Motos de Alto Cilindraje</title>
+    <style>
+        :root {
+            --primary-color: #d32f2f;
+            --secondary-color: #212121;
+            --accent-color: #ffc107;
+            --text-color: #333;
+            --light-color: #f5f5f5;
+            --dark-color: #121212;
+            --border-radius: 6px;
+            --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            color: var(--text-color);
+            background-color: var(--light-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: var(--primary-color);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 8px 0;
+            position: relative;
+        }
+        
+        nav ul li a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+        
+        nav ul li a:hover:after {
+            width: 100%;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/api/placeholder/1600/900') center/cover no-repeat;
+            color: white;
+            padding: 8rem 0;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .hero h1 span {
+            color: var(--primary-color);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #b71c1c;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid white;
+            margin-left: 15px;
+        }
+        
+        .btn-secondary:hover {
+            background-color: white;
+            color: var(--secondary-color);
+        }
+        
+        .section {
+            padding: 5rem 0;
+        }
+        
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 3px;
+            background-color: var(--primary-color);
+            bottom: -10px;
+            left: 20%;
+        }
+        
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .featured-bikes {
+            background-color: white;
+        }
+        
+        .bike-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .bike-card {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: transform 0.3s;
+            background-color: var(--light-color);
+        }
+        
+        .bike-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .bike-image {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .bike-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .bike-card:hover .bike-image img {
+            transform: scale(1.1);
+        }
+        
+        .bike-tag {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .bike-content {
+            padding: 25px;
+        }
+        
+        .bike-brand {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .bike-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+        
+        .bike-specs {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        
+        .spec-item {
+            text-align: center;
+        }
+        
+        .spec-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+        
+        .spec-label {
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+        }
+        
+        .bike-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .bike-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .btn-sm {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .advantages {
+            background-color: var(--dark-color);
+            color: white;
+        }
+        
+        .advantages .section-title h2 {
+            color: white;
+        }
+        
+        .advantages .section-title p {
+            color: #ccc;
+        }
+        
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .advantage-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .advantage-card:hover {
+            transform: translateY(-5px);
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .advantage-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .advantage-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .categories {
+            background-color: var(--light-color);
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .category-card {
+            position: relative;
+            height: 300px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .category-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .category-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .category-card:hover .category-content {
+            padding-bottom: 40px;
+        }
+        
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .brands {
+            background-color: white;
+        }
+        
+        .brands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .brand-item {
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .brand-item:hover {
+            transform: scale(1.1);
+        }
+        
+        .brand-logo {
+            max-width: 120px;
+            height: 80px;
+            object-fit: contain;
+            filter: grayscale(100%);
+            transition: filter 0.3s;
+        }
+        
+        .brand-item:hover .brand-logo {
+            filter: grayscale(0%);
+        }
+        
+        .testimonials {
+            background-color: var(--light-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--box-shadow);
+            position: relative;
+        }
+        
+        .testimonial-card:before {
+            content: """;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 5rem;
+            color: rgba(0, 0, 0, 0.1);
+            font-family: serif;
+            line-height: 1;
+        }
+        
+        .testimonial-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 15px;
+        }
+        
+        .author-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .author-info h4 {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+        
+        .author-info p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .rating {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            margin-top: 5px;
+        }
+        
+        .cta {
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/api/placeholder/1600/800') center/cover no-repeat;
+            text-align: center;
+            color: white;
+        }
+        
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta p {
+            margin-bottom: 2rem;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 5rem 0 1rem;
+        }
+        
+        .footer-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background-color: var(--primary-color);
+            bottom: 0;
+            left: 0;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-icon:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-size: 0.9rem;
+            color: #bbb;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            margin-top: 15px;
+        }
+        
+        .newsletter-input {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+            color: white;
+        }
+        
+        .newsletter-input::placeholder {
+            color: #bbb;
+        }
+        
+        .newsletter-button {
+            padding: 10px 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .newsletter-button:hover {
+            background-color: #b71c1c;
+        }
+        
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .bike-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                padding: 10px;
+            }
+            
+            .logo {
+                margin-bottom: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .hero {
+                padding: 5rem 0;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .btn {
+                margin: 5px;
+            }
+            
+            .section {
+                padding: 3rem 0;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">High<span>Ride</span></a>
+            <nav>
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Motos</a></li>
+                    <li><a href="#">Marcas</a></li>
+                    <li><a href="#">Accesorios</a></li>
+                    <li><a href="#">Experiencias</a></li>
+                    <li><a href="#">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>POTENCIA <span>SIN LÍMITES</span></h1>
+            <p>Descubre la adrenalina pura con las motos de alto cilindraje más exclusivas del mercado. Tecnología, diseño y rendimiento que te llevarán a otro nivel en cada kilómetro.</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn">Ver Catálogo</a>
+                <a href="#" class="btn btn-secondary">Agendar Prueba</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Bikes Section -->
+    <section class="section featured-bikes">
+        <div class="container">
+            <div class="section-title">
+                <h2>Motos Destacadas</h2>
+                <p>Nuestra selección exclusiva de las motos más potentes, avanzadas y deseadas del momento. Verdaderas máquinas diseñadas para dominar el asfalto.</p>
+            </div>
+            <div class="bike-grid">
+                <div class="bike-card">
+                    <div class="bike-image">
+                        <img src="/api/placeholder/600/400" alt="Ducati Panigale V4">
+                        <span class="bike-tag">Superbike</span>
+                    </div>
+                    <div class="bike-content">
+                        <div class="bike-brand">Ducati</div>
+                        <h3 class="bike-title">Panigale V4 S</h3>
+                        <div class="bike-specs">
+                            <div class="spec-item">
+                                <div class="spec-value">1103cc</div>
+                                <div class="spec-label">Motor</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-value">214 HP</div>
+                                <div class="spec-label">Potencia</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-value">195 kg</div>
+                                <div class="spec-label">Peso</div>
+                            </div>
+                        </div>
+                        <div class="bike-price">$35,990</div>
+                        <div class="bike-actions">
+                            <a href="#" class="btn btn-sm">Ver Detalles</a>
+                            <a href="#" class="btn btn-sm btn-outline">Comparar</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bike-card">
+                    <div class="bike-image">
+                        <img src="/api/placeholder/600/400" alt="BMW S1000RR">
+                        <span class="bike-tag">Racing</span>
+                    </div>
+                    <div class="bike-content">
+                        <div class="bike-brand">BMW</div>
+                        <h3 class="bike-title">S1000RR M</h3>
+                        <div class="bike-specs">
+                            <div class="spec-item">
+                                <div class="spec-value">999cc</div>
+                                <div class="spec-label">Motor</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-value">205 HP</div>
+                                <div class="spec-label">Potencia</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-value">197 kg</div>
+                                <div class="spec-label">Peso</div>
+                            </div>
+                        </div>
+                        <div class="bike-price">$32,495</div>
+                        <div class="bike-actions">
+                            <a href="#" class="btn btn-sm">Ver Detalles</a>
+                            <a href="#" class="btn btn-sm btn-outline">Comparar</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bike-card">
+                    <div class="bike-image">
+                        <img src="/api/placeholder/600/400" alt="Honda Africa Twin">
+                        <span class="bike-tag">Adventure</span>
+                    </div>
+                    <div class="bike-content">
+                        <div class="bike-brand">Honda</div>
+                        <h3 class="bike-title">Africa Twin DCT</h3>
+                        <div class="bike-specs">
+                            <div class="spec-item">
+                                <div class="spec-value">1084cc</div>
+                                <div class="spec-label">Motor</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-value">101 HP</div>
+                                <div class="spec-label">Potencia</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-value">238 kg</div>
+                                <div class="spec-label">Peso</div>
+                            </div>
+                        </div>
+                        <div class="bike-price">$28,750</div>
+                        <div class="bike-actions">
+                            <a href="#" class="btn btn-sm">Ver Detalles</a>
+                            <a href="#" class="btn btn-sm btn-outline">Comparar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Advantages Section -->
+    <section class="section advantages">
+        <div class="container">
+            <div class="section-title">
+                <h2>Por qué elegir Alto Cilindraje</h2>
+                <p>Las motos de alto cilindraje ofrecen una experiencia inigualable con ventajas que van desde el rendimiento hasta la exclusividad.</p>
+            </div>
+            <div class="advantages-grid">
+                <div class="advantage-card">
+                    <i class="fas fa-tachometer-alt advantage-icon"></i>
+                    <h3 class="advantage-title">Máxima Potencia</h3>
+                    <p>Disfruta de motores potentes con respuesta inmediata y aceleración que te dejará sin aliento.</p>
+                </div>
+                <div class="advantage-card">
+                    <i class="fas fa-cogs advantage-icon"></i>
+                    <h3 class="advantage-title">Tecnología Avanzada</h3>
+                    <p>Sistemas electrónicos de vanguardia, asistentes de conducción y conectividad del más alto nivel.</p>
+                </div>
+                <div class="advantage-card">
+                    <i class="fas fa-road advantage-icon"></i>
+                    <h3 class="advantage-title">Manejo Superior</h3>
+                    <p>Precisión en curvas, estabilidad a alta velocidad y experiencia de conducción inigualable.</p>
+                </div>
+                <div class="advantage-card">
+                    <i class="fas fa-trophy advantage-icon"></i>
+                    <h3 class="advantage-title">Exclusividad</h3>
+                    <p>Forma parte de un selecto grupo de motociclistas que valoran la calidad y el rendimiento.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Categories Section -->
+    <section class="section categories">
+        <div class="container">
+            <div class="section-title">
+                <h2>Categorías</h2>
+                <p>Explora los diferentes tipos de motos de alto cilindraje, cada una diseñada para ofrecer experiencias únicas según tu estilo de conducción y preferencias.</p>
+            </div>
+            <div class="category-grid">
+                <div class="category-card">
+                    <img src="/api/placeholder/500/500" alt="Superbikes" class="category-image">
+                    <div class="category-content">
+                        <h3 class="category-title">Superbikes</h3>
+                        <p>Velocidad extrema y tecnología derivada de competición.</p>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <img src="/api/placeholder/500/500" alt="Naked" class="category-image">
+                    <div class="category-content">
+                        <h3 class="category-title">Naked</h3>
+                        <p>Potencia y agilidad con diseño minimalista y agresivo.</p>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <img src="/api/placeholder/500/500" alt="Adventure" class="category-image">
+                    <div class="category-content">
+                        <h3 class="category-title">Adventure</h3>
+                        <p>Versatilidad para conquistar todo tipo de terrenos.</p>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <img src="/api/placeholder/500/500" alt="Touring" class="category-image">
+                    <div class="category-content">
+                        <h3 class="category-title">Touring</h3>
+                        <p>Confort y equipamiento para largos viajes en carretera.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Brands Section -->
+    <section class="section brands">
+        <div class="container">
+            <div class="section-title">
+                <h2>Marcas Premium</h2>
+                <p>Trabajamos con las mejores marcas del mundo para ofrecerte lo último en tecnología, diseño y rendimiento.</p>
+            </div>
+            <div class="brands-grid">
+                <div class="brand-item">
+                    <img src="/api/placeholder/150/80" alt="Ducati" class="brand-logo">
+                </div>
+                <div class="brand-item">
+                    <img src="/api/placeholder/150/80" alt="BMW" class="brand-logo">
+                </div>
+                <div class="brand-item">
+                    <img src="/api/placeholder/150/80" alt="Kawasaki" class="brand-logo">
+                </div>
+                <div class
